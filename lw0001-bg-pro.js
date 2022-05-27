@@ -17,8 +17,10 @@ function Decoder(bytes, port) {
 
   decoded.ack_frm_cnt = common_header[2] & 0x0f;
   decoded.battery_voltage = (common_header[2] >> 4) & 0x0f;
-  decoded.battery_voltage =
-    Math.round(10 * (2.2 + 0.1 * decoded.battery_voltage)) / 10;
+  decoded.push({
+    field: "BATTERY",
+    value: Math.round(10 * (2.2 + 0.1 * decoded.battery_voltage)) / 10,
+  });
 
   if (port === 1) {
     decoded.payload_type = "HEARTBEAT";
