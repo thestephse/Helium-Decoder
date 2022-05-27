@@ -1,7 +1,5 @@
-// Only Port 8 so far
-
 function Decoder(bytes, port) {
-  var decoded = [];
+  var decoded = {};
   warnings = [];
   errors = [];
 
@@ -35,7 +33,7 @@ function Decoder(bytes, port) {
   }
 
   if (port === 2) {
-    decoded.payload_type = "location_fixed";
+    decoded.payload_type = "LOCATION";
     decoded.positioning_type = (decoded.status >> 6) & 0x01;
     decoded.positioning_success_type = bytes[3];
     decoded.date_time = Bytes2DateTime(bytes.slice(4, 12));
