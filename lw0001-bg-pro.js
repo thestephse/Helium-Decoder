@@ -1,13 +1,10 @@
 // Only Port 8 so far
 
-function decodeUplink(input) {
-  bytes = input.bytes;
-  port = input.fPort;
+function Decoder(bytes, port) {
+  var decoded = [];
   warnings = [];
   errors = [];
 
-  var decoded = {};
-  decoded.sensor = "MOKO LW001-BG PRO";
   common_header = bytes.slice(0, 3);
 
   statusB = common_header[0];
@@ -136,8 +133,8 @@ function decodeUplink(input) {
     decoded.lora_worktime = Bytes2Int(bytes.slice(19, 23));
   }
 
-  decoded.raw_bytes = bytes;
-  decoded.raw_original = Bytes2Hex(bytes);
+  // decoded.raw_bytes = bytes;
+  // decoded.raw_original = Bytes2Hex(bytes);
 
   return {
     data: decoded,
@@ -146,68 +143,57 @@ function decodeUplink(input) {
   };
 }
 
-// This is the part we need for Datacake
-
-function Decoder(payload, port) {
-  return [
-    {
-      field: "MOVEMENT", // Field created in Datacake
-      value: true,
-    },
-  ];
-}
-
 /* 4-byte float in IEEE 754 standard, byte order is low byte first */
-function Bytes2Float(byteArray) {
-  var bits =
-    (byteArray[3] << 24) |
-    (byteArray[2] << 16) |
-    (byteArray[1] << 8) |
-    byteArray[0];
-  var sign = bits >>> 31 === 0 ? 1.0 : -1.0;
-  var e = (bits >>> 23) & 0xff;
-  var m = e === 0 ? (bits & 0x7fffff) << 1 : (bits & 0x7fffff) | 0x800000;
-  var f = sign * m * Math.pow(2, e - 150);
-  return f;
-}
+// function Bytes2Float(byteArray) {
+//   var bits =
+//     (byteArray[3] << 24) |
+//     (byteArray[2] << 16) |
+//     (byteArray[1] << 8) |
+//     byteArray[0];
+//   var sign = bits >>> 31 === 0 ? 1.0 : -1.0;
+//   var e = (bits >>> 23) & 0xff;
+//   var m = e === 0 ? (bits & 0x7fffff) << 1 : (bits & 0x7fffff) | 0x800000;
+//   var f = sign * m * Math.pow(2, e - 150);
+//   return f;
+// }
 
-/* n-bytes array to integer - most significant byte is stored first (Big Endian) */
-function Bytes2Int(byteArray) {
-  var n = 0;
-  for (i = 0; i < byteArray.length; i++) {
-    n = (n << 8) + byteArray[i];
-  }
-  return n;
-}
+// /* n-bytes array to integer - most significant byte is stored first (Big Endian) */
+// function Bytes2Int(byteArray) {
+//   var n = 0;
+//   for (i = 0; i < byteArray.length; i++) {
+//     n = (n << 8) + byteArray[i];
+//   }
+//   return n;
+// }
 
-function Bytes2Hex(byteArray) {
-  return Array.from(byteArray, function (byte) {
-    return ("0" + (byte & 0xff).toString(16)).slice(-2);
-  }).join("");
-}
+// function Bytes2Hex(byteArray) {
+//  return Array.from(byteArray, function (byte) {
+//     return ("0" + (byte & 0xff).toString(16)).slice(-2);
+//   }).join("");
+// //}
 
-function Bytes2MAC(byteArray) {
-  return Array.from(byteArray, function (byte) {
-    return ("0" + (byte & 0xff).toString(16)).slice(-2);
-  }).join(":");
-}
+// function Bytes2MAC(byteArray) {
+//   return Array.from(byteArray, function (byte) {
+//     return ("0" + (byte & 0xff).toString(16)).slice(-2);
+//   }).join(":");
+// }
 
-function Bytes2DateTime(byteArray) {
-  dt = {};
-  dt.ts_year = Bytes2Int([byteArray[0], byteArray[1]]);
-  dt.ts_month = byteArray[2];
-  dt.ts_day = byteArray[3];
-  dt.ts_hour = byteArray[4];
-  dt.ts_min = byteArray[5];
-  dt.ts_sec = byteArray[6];
+// function Bytes2DateTime(byteArray) {
+//   dt = {};
+//   dt.ts_year = Bytes2Int([byteArray[0], byteArray[1]]);
+//   dt.ts_month = byteArray[2];
+//   dt.ts_day = byteArray[3];
+//   dt.ts_hour = byteArray[4];
+//   dt.ts_min = byteArray[5];
+//   dt.ts_sec = byteArray[6];
 
-  dt.ts_tz = byteArray[7];
-  dt.ts_tz -= dt.ts_tz > 128 ? 256 : 0;
-  dt.ts_tz = dt.ts_tz >= 0 ? "+" + dt.ts_tz : dt.ts_tz;
+//   dt.ts_tz = byteArray[7];
+//   dt.ts_tz -= dt.ts_tz > 128 ? 256 : 0;
+//   dt.ts_tz = dt.ts_tz >= 0 ? "+" + dt.ts_tz : dt.ts_tz;
 
-  dt.datetime = "";
-  dt.datetime += dt.ts_year + "-" + dt.ts_month + "-" + dt.ts_day;
-  dt.datetime += " " + dt.ts_hour + ":" + dt.ts_min + ":" + dt.ts_sec;
-  dt.datetime += " " + "UTC" + dt.ts_tz;
-  return dt;
-}
+//   dt.datetime = "";
+//   dt.datetime += dt.ts_year + "-" + dt.ts_month + "-" + dt.ts_day;
+//   dt.datetime += " " + dt.ts_hour + ":" + dt.ts_min + ":" + dt.ts_sec;
+//   dt.datetime += " " + "UTC" + dt.ts_tz;
+//   return dt;
+// }
