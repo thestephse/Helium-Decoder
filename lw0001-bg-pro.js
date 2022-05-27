@@ -144,56 +144,56 @@ function Decoder(bytes, port) {
 }
 
 /* 4-byte float in IEEE 754 standard, byte order is low byte first */
-// function Bytes2Float(byteArray) {
-//   var bits =
-//     (byteArray[3] << 24) |
-//     (byteArray[2] << 16) |
-//     (byteArray[1] << 8) |
-//     byteArray[0];
-//   var sign = bits >>> 31 === 0 ? 1.0 : -1.0;
-//   var e = (bits >>> 23) & 0xff;
-//   var m = e === 0 ? (bits & 0x7fffff) << 1 : (bits & 0x7fffff) | 0x800000;
-//   var f = sign * m * Math.pow(2, e - 150);
-//   return f;
-// }
+function Bytes2Float(byteArray) {
+  var bits =
+    (byteArray[3] << 24) |
+    (byteArray[2] << 16) |
+    (byteArray[1] << 8) |
+    byteArray[0];
+  var sign = bits >>> 31 === 0 ? 1.0 : -1.0;
+  var e = (bits >>> 23) & 0xff;
+  var m = e === 0 ? (bits & 0x7fffff) << 1 : (bits & 0x7fffff) | 0x800000;
+  var f = sign * m * Math.pow(2, e - 150);
+  return f;
+}
 
-// /* n-bytes array to integer - most significant byte is stored first (Big Endian) */
-// function Bytes2Int(byteArray) {
-//   var n = 0;
-//   for (i = 0; i < byteArray.length; i++) {
-//     n = (n << 8) + byteArray[i];
-//   }
-//   return n;
-// }
+/* n-bytes array to integer - most significant byte is stored first (Big Endian) */
+function Bytes2Int(byteArray) {
+  var n = 0;
+  for (i = 0; i < byteArray.length; i++) {
+    n = (n << 8) + byteArray[i];
+  }
+  return n;
+}
 
-// function Bytes2Hex(byteArray) {
-//  return Array.from(byteArray, function (byte) {
-//     return ("0" + (byte & 0xff).toString(16)).slice(-2);
-//   }).join("");
-// //}
+function Bytes2Hex(byteArray) {
+  return Array.from(byteArray, function (byte) {
+    return ("0" + (byte & 0xff).toString(16)).slice(-2);
+  }).join("");
+}
 
-// function Bytes2MAC(byteArray) {
-//   return Array.from(byteArray, function (byte) {
-//     return ("0" + (byte & 0xff).toString(16)).slice(-2);
-//   }).join(":");
-// }
+function Bytes2MAC(byteArray) {
+  return Array.from(byteArray, function (byte) {
+    return ("0" + (byte & 0xff).toString(16)).slice(-2);
+  }).join(":");
+}
 
-// function Bytes2DateTime(byteArray) {
-//   dt = {};
-//   dt.ts_year = Bytes2Int([byteArray[0], byteArray[1]]);
-//   dt.ts_month = byteArray[2];
-//   dt.ts_day = byteArray[3];
-//   dt.ts_hour = byteArray[4];
-//   dt.ts_min = byteArray[5];
-//   dt.ts_sec = byteArray[6];
+function Bytes2DateTime(byteArray) {
+  dt = {};
+  dt.ts_year = Bytes2Int([byteArray[0], byteArray[1]]);
+  dt.ts_month = byteArray[2];
+  dt.ts_day = byteArray[3];
+  dt.ts_hour = byteArray[4];
+  dt.ts_min = byteArray[5];
+  dt.ts_sec = byteArray[6];
 
-//   dt.ts_tz = byteArray[7];
-//   dt.ts_tz -= dt.ts_tz > 128 ? 256 : 0;
-//   dt.ts_tz = dt.ts_tz >= 0 ? "+" + dt.ts_tz : dt.ts_tz;
+  dt.ts_tz = byteArray[7];
+  dt.ts_tz -= dt.ts_tz > 128 ? 256 : 0;
+  dt.ts_tz = dt.ts_tz >= 0 ? "+" + dt.ts_tz : dt.ts_tz;
 
-//   dt.datetime = "";
-//   dt.datetime += dt.ts_year + "-" + dt.ts_month + "-" + dt.ts_day;
-//   dt.datetime += " " + dt.ts_hour + ":" + dt.ts_min + ":" + dt.ts_sec;
-//   dt.datetime += " " + "UTC" + dt.ts_tz;
-//   return dt;
-// }
+  dt.datetime = "";
+  dt.datetime += dt.ts_year + "-" + dt.ts_month + "-" + dt.ts_day;
+  dt.datetime += " " + dt.ts_hour + ":" + dt.ts_min + ":" + dt.ts_sec;
+  dt.datetime += " " + "UTC" + dt.ts_tz;
+  return dt;
+}
