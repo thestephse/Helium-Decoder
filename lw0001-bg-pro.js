@@ -23,7 +23,7 @@ function Decoder(bytes, port) {
     Math.round(10 * (2.2 + 0.1 * decoded.battery_voltage)) / 10;
 
   if (port === 1) {
-    decoded.payload_type = "heartbeat";
+    decoded.payload_type = "HEARTBEAT";
     decoded.reboot_reason = bytes[3];
     decoded.fw_ver =
       ((bytes[4] >> 6) & 0x03) +
@@ -105,7 +105,7 @@ function Decoder(bytes, port) {
   }
 
   if (port == 5) {
-    decoded.payload_type = "vibration";
+    decoded.payload_type = "VIBRATION";
     decoded.vibrations_count = Bytes2Int([bytes[3], bytes[4]]);
   }
 
@@ -133,8 +133,8 @@ function Decoder(bytes, port) {
     decoded.lora_worktime = Bytes2Int(bytes.slice(19, 23));
   }
 
-  // decoded.raw_bytes = bytes;
-  // decoded.raw_original = Bytes2Hex(bytes);
+  decoded.raw_bytes = bytes;
+  //decoded.raw_original = Bytes2Hex(bytes);
 
   return {
     data: decoded,
@@ -166,17 +166,17 @@ function Bytes2Int(byteArray) {
   return n;
 }
 
-function Bytes2Hex(byteArray) {
-  return Array.from(byteArray, function (byte) {
-    return ("0" + (byte & 0xff).toString(16)).slice(-2);
-  }).join("");
-}
+// function Bytes2Hex(byteArray) {
+//   return Array.from(byteArray, function (byte) {
+//     return ("0" + (byte & 0xff).toString(16)).slice(-2);
+//   }).join("");
+// }
 
-function Bytes2MAC(byteArray) {
-  return Array.from(byteArray, function (byte) {
-    return ("0" + (byte & 0xff).toString(16)).slice(-2);
-  }).join(":");
-}
+// function Bytes2MAC(byteArray) {
+//   return Array.from(byteArray, function (byte) {
+//     return ("0" + (byte & 0xff).toString(16)).slice(-2);
+//   }).join(":");
+// }
 
 function Bytes2DateTime(byteArray) {
   dt = {};
