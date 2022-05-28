@@ -75,10 +75,10 @@ function Decoder(bytes, port) {
   }
 
   if (port === 3) {
-    decoded.payload_type = "location_failure";
-    decoded.position_failure = Bytes2Hex([bytes[3]]);
-    decoded.data_length = bytes[4];
-    payload = bytes.slice(5, 5 + decoded.data_length + 1);
+    //decoded.payload_type = "location_failure";
+    //decoded.position_failure = Bytes2Hex([bytes[3]]);
+    //decoded.data_length = bytes[4];
+    //payload = bytes.slice(5, 5 + decoded.data_length + 1);
     if (bytes[3] < 0x03) {
       //wifi
       decoded.wifi = {};
@@ -177,11 +177,11 @@ function Bytes2Int(byteArray) {
 //   }).join("");
 // }
 
-// function Bytes2MAC(byteArray) {
-//   return Array.from(byteArray, function (byte) {
-//     return ("0" + (byte & 0xff).toString(16)).slice(-2);
-//   }).join(":");
-// }
+function Bytes2MAC(byteArray) {
+  return Array.from(byteArray, function (byte) {
+    return ("0" + (byte & 0xff).toString(16)).slice(-2);
+  }).join(":");
+}
 
 function Bytes2DateTime(byteArray) {
   dt = {};
