@@ -1,5 +1,5 @@
 function Decoder(bytes, port) {
-  var decoded = {};
+  var decoded = [];
   warnings = [];
   errors = [];
 
@@ -18,7 +18,7 @@ function Decoder(bytes, port) {
   decoded.ack_frm_cnt = common_header[2] & 0x0f;
   decoded.battery_voltage = (common_header[2] >> 4) & 0x0f;
   decoded.push({
-    field: "BATTERY",
+    field: "VOLTAGE",
     value: Math.round(10 * (2.2 + 0.1 * decoded.battery_voltage)) / 10,
   });
 
@@ -35,7 +35,7 @@ function Decoder(bytes, port) {
   }
 
   if (port === 2) {
-    decoded.payload_type = "LOCATION";
+    decoded.payload_type = "location_fix";
     decoded.positioning_type = (decoded.status >> 6) & 0x01;
     decoded.positioning_success_type = bytes[3];
     decoded.date_time = Bytes2DateTime(bytes.slice(4, 12));
@@ -68,6 +68,10 @@ function Decoder(bytes, port) {
       decoded.gps.longitude /= 10000000;
       decoded.Latitude = decoded.gps.latitude;
       decoded.Longitude = decoded.gps.longitude;
+      decoded.push({
+        field: "GPS_LOCATION",
+        value: "(" + decoded.Latitude + "," + decoded.Longitude + ")",
+      });
     }
   }
 
@@ -120,8 +124,10 @@ function Decoder(bytes, port) {
   }
 
   if (port === 8) {
-    decoded.payload_type = "MOVEMENT";
-    decoded.event_type = bytes[3];
+    decoded.push({
+      field: "MOVEMENT",
+      value: (decoded.event_type = bytes[3]),
+    });
   }
 
   if (port === 9) {
