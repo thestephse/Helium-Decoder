@@ -66,11 +66,10 @@ function Decoder(bytes, port) {
       decoded.gps.longitude -=
         decoded.longitude > 0x80000000 ? 0x0100000000 : 0;
       decoded.gps.longitude /= 10000000;
-      decoded.Latitude = decoded.gps.latitude;
-      decoded.Longitude = decoded.gps.longitude;
+
       decoded.push({
         field: "GPS_LOCATION",
-        value: "(" + decoded.Latitude + "," + decoded.Longitude + ")",
+        value: "(" + decoded.gps.latitude + "," + decoded.gps.longitude + ")",
       });
     }
   }
