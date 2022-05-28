@@ -5,6 +5,7 @@ function Decoder(bytes, port) {
 
   common_header = bytes.slice(0, 3);
 
+  // make status fields on events. boolean, if statement?
   statusB = common_header[0];
   decoded.operation_mode = statusB & 0x03;
   decoded.battery_low = (statusB >> 2) & 0x01;
@@ -13,7 +14,12 @@ function Decoder(bytes, port) {
   decoded.has_moved = (statusB >> 5) & 0x01;
 
   decoded.temperature = common_header[1];
-  decoded.temperature -= decoded.temperature > 128 ? 256 : 0;
+  insertTemp = decoded.temperature -= decoded.temperature > 128 ? 256 : 0;
+
+  decoded.push({
+    field: "TEMPERATURE",
+    value: insertTemp,
+  });
 
   decoded.ack_frm_cnt = common_header[2] & 0x0f;
   decoded.battery_voltage = (common_header[2] >> 4) & 0x0f;
