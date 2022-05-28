@@ -45,15 +45,30 @@ function Decoder(bytes, port) {
       //wifi
       decoded.wifi = {};
       for (i = 0; i < decoded.data_length / 7; i++) {
-        decoded.wifi[Bytes2MAC(payload.slice(i * 7, i * 7 + 6))] =
+        insertValue = decoded.wifi[Bytes2MAC(payload.slice(i * 7, i * 7 + 6))] =
           payload[i * 7 + 6] - 256;
+
+        decoded.push({
+          field: "GPS_LOCATION",
+          value: insertValue,
+          field: "FIX",
+          value: "WIFI",
+        });
       }
     } else if (decoded.positioning_success_type === 1) {
       //bt
       decoded.bluetooth = {};
+
       for (i = 0; i < decoded.data_length / 7; i++) {
-        decoded.bluetooth[Bytes2MAC(payload.slice(i * 7, i * 7 + 6))] =
-          payload[i * 7 + 6] - 256;
+        insertValue = decoded.bluetooth[
+          Bytes2MAC(payload.slice(i * 7, i * 7 + 6))
+        ] = payload[i * 7 + 6] - 256;
+        decoded.push({
+          field: "GPS_LOCATION",
+          value: insertValue,
+          field: "FIX",
+          value: "BT",
+        });
       }
     } else if (decoded.positioning_success_type === 2) {
       //gps
@@ -70,6 +85,8 @@ function Decoder(bytes, port) {
       decoded.push({
         field: "GPS_LOCATION",
         value: "(" + decoded.gps.latitude + "," + decoded.gps.longitude + ")",
+        field: "FIX",
+        value: "GPS",
       });
     }
   }
@@ -77,8 +94,8 @@ function Decoder(bytes, port) {
   if (port === 3) {
     //decoded.payload_type = "location_failure";
     //decoded.position_failure = Bytes2Hex([bytes[3]]);
-    //decoded.data_length = bytes[4];
-    //payload = bytes.slice(5, 5 + decoded.data_length + 1);
+    decoded.data_length = bytes[4];
+    payload = bytes.slice(5, 5 + decoded.data_length + 1);
     if (bytes[3] < 0x03) {
       //wifi
       decoded.wifi = {};
