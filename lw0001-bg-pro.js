@@ -13,6 +13,11 @@ function Decoder(bytes, port) {
   decoded.man_down_alarm = (statusB >> 4) & 0x01;
   decoded.has_moved = (statusB >> 5) & 0x01;
 
+  decoded.push({
+    field: "HAS_MOVED",
+    value: decoded.has_moved,
+  });
+
   decoded.temperature = common_header[1];
   insertTemp = decoded.temperature -= decoded.temperature > 128 ? 256 : 0;
 
@@ -38,6 +43,11 @@ function Decoder(bytes, port) {
       "." +
       (bytes[4] & 0x0f);
     decoded.active_state_counts = Bytes2Int(bytes.slice(5, 8));
+
+    decoded.push({
+      field: "HEARTBEAT",
+      value: decoded.active_state_count,
+    });
   }
 
   if (port === 2) {
@@ -51,7 +61,7 @@ function Decoder(bytes, port) {
       //wifi
       decoded.wifi = {};
       for (i = 0; i < decoded.data_length / 7; i++) {
-        insertValue = decoded.wifi[Bytes2MAC(payload.slice(i * 7, i * 7 + 6))] =
+        decoded.wifi[Bytes2MAC(payload.slice(i * 7, i * 7 + 6))] =
           payload[i * 7 + 6] - 256;
 
         decoded.push({
@@ -98,8 +108,8 @@ function Decoder(bytes, port) {
   }
 
   if (port === 3) {
-    //decoded.payload_type = "location_failure";
-    //decoded.position_failure = Bytes2Hex([bytes[3]]);
+    decoded.payload_type = "location_failure";
+    decoded.position_failure = Bytes2Hex([bytes[3]]);
     decoded.data_length = bytes[4];
     payload = bytes.slice(5, 5 + decoded.data_length + 1);
     if (bytes[3] < 0x03) {
@@ -162,7 +172,7 @@ function Decoder(bytes, port) {
   }
 
   decoded.raw_bytes = bytes;
-  //decoded.raw_original = Bytes2Hex(bytes);
+  decoded.raw_bytes = Bytes2Hex(bytes);
 
   return {
     data: decoded,
@@ -194,14 +204,14 @@ function Bytes2Int(byteArray) {
   return n;
 }
 
-// function Bytes2Hex(byteArray) {
-//   return Array.from(byteArray, function (byte) {
-//     return ("0" + (byte & 0xff).toString(16)).slice(-2);
-//   }).join("");
-// }
+function Bytes2Hex(byteArray) {
+  return Array(byteArray, function (byte) {
+    return ("0" + (byte & 0xff).toString(16)).slice(-2);
+  }).join("");
+}
 
 function Bytes2MAC(byteArray) {
-  return Array.from(byteArray, function (byte) {
+  return Array(byteArray, function (byte) {
     return ("0" + (byte & 0xff).toString(16)).slice(-2);
   }).join(":");
 }
