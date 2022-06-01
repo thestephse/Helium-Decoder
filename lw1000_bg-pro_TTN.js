@@ -1,11 +1,18 @@
-function Decoder(bytes, port) {
-  var decoded = [];
+/*
+ * Packet Decoder for MOKO LW001-BG PRO GPS tracker
+ * by Emanuele Goldoni, 2022 <emanuele.goldoni@gmail.com>
+ */
+
+function decodeUplink(input) {
+  bytes = input.bytes;
+  port = input.fPort;
   warnings = [];
   errors = [];
 
+  var decoded = {};
+  decoded.sensor = "MOKO LW001-BG PRO";
   common_header = bytes.slice(0, 3);
 
-  // make status fields on events. boolean, if statement?
   statusB = common_header[0];
   decoded.operation_mode = statusB & 0x03;
   decoded.battery_low = (statusB >> 2) & 0x01;
@@ -13,28 +20,16 @@ function Decoder(bytes, port) {
   decoded.man_down_alarm = (statusB >> 4) & 0x01;
   decoded.has_moved = (statusB >> 5) & 0x01;
 
-  decoded.push({
-    field: "HAS_MOVED",
-    value: decoded.has_moved,
-  });
-
   decoded.temperature = common_header[1];
-  insertTemp = decoded.temperature -= decoded.temperature > 128 ? 256 : 0;
-
-  decoded.push({
-    field: "TEMPERATURE",
-    value: insertTemp,
-  });
+  decoded.temperature -= decoded.temperature > 128 ? 256 : 0;
 
   decoded.ack_frm_cnt = common_header[2] & 0x0f;
   decoded.battery_voltage = (common_header[2] >> 4) & 0x0f;
-  decoded.push({
-    field: "VOLTAGE",
-    value: Math.round(10 * (2.2 + 0.1 * decoded.battery_voltage)) / 10,
-  });
+  decoded.battery_voltage =
+    Math.round(10 * (2.2 + 0.1 * decoded.battery_voltage)) / 10;
 
   if (port === 1) {
-    decoded.payload_type = "HEARTBEAT";
+    decoded.payload_type = "heartbeat";
     decoded.reboot_reason = bytes[3];
     decoded.fw_ver =
       ((bytes[4] >> 6) & 0x03) +
@@ -43,15 +38,10 @@ function Decoder(bytes, port) {
       "." +
       (bytes[4] & 0x0f);
     decoded.active_state_counts = Bytes2Int(bytes.slice(5, 8));
-
-    decoded.push({
-      field: "HEARTBEAT",
-      value: decoded.active_state_count,
-    });
   }
 
   if (port === 2) {
-    decoded.payload_type = "location_fix";
+    decoded.payload_type = "location_fixed";
     decoded.positioning_type = (decoded.status >> 6) & 0x01;
     decoded.positioning_success_type = bytes[3];
     decoded.date_time = Bytes2DateTime(bytes.slice(4, 12));
@@ -63,28 +53,13 @@ function Decoder(bytes, port) {
       for (i = 0; i < decoded.data_length / 7; i++) {
         decoded.wifi[Bytes2MAC(payload.slice(i * 7, i * 7 + 6))] =
           payload[i * 7 + 6] - 256;
-
-        decoded.push({
-          field: "GPS_LOCATION",
-          value: insertValue,
-          field: "FIX",
-          value: "WIFI",
-        });
       }
     } else if (decoded.positioning_success_type === 1) {
       //bt
       decoded.bluetooth = {};
-
       for (i = 0; i < decoded.data_length / 7; i++) {
-        insertValue = decoded.bluetooth[
-          Bytes2MAC(payload.slice(i * 7, i * 7 + 6))
-        ] = payload[i * 7 + 6] - 256;
-        decoded.push({
-          field: "GPS_LOCATION",
-          value: insertValue,
-          field: "FIX",
-          value: "BT",
-        });
+        decoded.bluetooth[Bytes2MAC(payload.slice(i * 7, i * 7 + 6))] =
+          payload[i * 7 + 6] - 256;
       }
     } else if (decoded.positioning_success_type === 2) {
       //gps
@@ -97,13 +72,8 @@ function Decoder(bytes, port) {
       decoded.gps.longitude -=
         decoded.longitude > 0x80000000 ? 0x0100000000 : 0;
       decoded.gps.longitude /= 10000000;
-
-      decoded.push({
-        field: "GPS_LOCATION",
-        value: "(" + decoded.gps.latitude + "," + decoded.gps.longitude + ")",
-        field: "FIX",
-        value: "GPS",
-      });
+      decoded.Latitude = decoded.gps.latitude;
+      decoded.Longitude = decoded.gps.longitude;
     }
   }
 
@@ -141,7 +111,7 @@ function Decoder(bytes, port) {
   }
 
   if (port == 5) {
-    decoded.payload_type = "VIBRATION";
+    decoded.payload_type = "vibration";
     decoded.vibrations_count = Bytes2Int([bytes[3], bytes[4]]);
   }
 
@@ -156,10 +126,8 @@ function Decoder(bytes, port) {
   }
 
   if (port === 8) {
-    decoded.push({
-      field: "MOVEMENT",
-      value: (decoded.event_type = bytes[3]),
-    });
+    decoded.payload_type = "event_message";
+    decoded.event_type = bytes[3];
   }
 
   if (port === 9) {
@@ -172,7 +140,7 @@ function Decoder(bytes, port) {
   }
 
   decoded.raw_bytes = bytes;
-  decoded.raw_bytes = Bytes2Hex(bytes);
+  decoded.raw_original = Bytes2Hex(bytes);
 
   return {
     data: decoded,
@@ -205,13 +173,13 @@ function Bytes2Int(byteArray) {
 }
 
 function Bytes2Hex(byteArray) {
-  return Array(byteArray, function (byte) {
+  return Array.from(byteArray, function (byte) {
     return ("0" + (byte & 0xff).toString(16)).slice(-2);
   }).join("");
 }
 
 function Bytes2MAC(byteArray) {
-  return Array(byteArray, function (byte) {
+  return Array.from(byteArray, function (byte) {
     return ("0" + (byte & 0xff).toString(16)).slice(-2);
   }).join(":");
 }
