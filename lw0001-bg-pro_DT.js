@@ -70,7 +70,26 @@ function Decoder(bytes, port) {
     date_time = Bytes2DateTime(bytes.slice(4, 12));
     data_length = bytes[12];
     payload = bytes.slice(13, 13 + data_length + 1);
-    if (positioning_success_type === 0) {
+
+    if (positioning_success_type === 2) {
+      //gps
+      gps = {};
+      gps.pdop = Math.round(payload[8] / 10);
+      gps.latitude = Bytes2Int(payload.slice(0, 4));
+      gps.latitude -= latitude > 0x80000000 ? 0x0100000000 : 0;
+      gps.latitude /= 10000000;
+      gps.longitude = Bytes2Int(payload.slice(4, 8));
+      gps.longitude -= longitude > 0x80000000 ? 0x0100000000 : 0;
+      gps.longitude /= 10000000;
+
+      decoded.push({
+        field: "GPS_LOCATION",
+        value: "(" + gps.longitude + "," + gps.latitude + ")",
+
+        field: "FIX",
+        value: "GPS",
+      });
+    } else if (positioning_success_type === 0) {
       //wifi
       wifi = {};
       for (i = 0; i < data_length / 7; i++) {
@@ -103,24 +122,6 @@ function Decoder(bytes, port) {
           value: "BT",
         });
       }
-    } else if (positioning_success_type === 2) {
-      //gps
-      gps = {};
-      gps.pdop = Math.round(payload[8] / 10);
-      gps.latitude = Bytes2Int(payload.slice(0, 4));
-      gps.latitude -= latitude > 0x80000000 ? 0x0100000000 : 0;
-      gps.latitude /= 10000000;
-      gps.longitude = Bytes2Int(payload.slice(4, 8));
-      gps.longitude -= longitude > 0x80000000 ? 0x0100000000 : 0;
-      gps.longitude /= 10000000;
-
-      decoded.push({
-        field: "GPS_LOCATION",
-        value: gps,
-
-        field: "FIX",
-        value: "GPS",
-      });
     }
   }
 
