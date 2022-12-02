@@ -1,0 +1,115 @@
+{
+    "app_eui": "FAF279FFFFBE752C",
+    "dc": {
+        "balance": 7537,
+        "nonce": 2
+    },
+    "decoded": {
+        "payload": {
+            "ack_frm_cnt": 0,
+            "battery_low": 0,
+            "battery_voltage": 3.7,
+            "bluetooth": {
+                "39:01:e0:aa:4b:48": -62,
+                "55:c9:ca:36:97:70": -62,
+                "56:ad:c9:b3:86:9c": -78
+            },
+            "data_length": 21,
+            "date_time": {
+                "datetime": "2022-6-8 9:23:54 UTC+2",
+                "ts_day": 8,
+                "ts_hour": 9,
+                "ts_min": 23,
+                "ts_month": 6,
+                "ts_sec": 54,
+                "ts_tz": "+2",
+                "ts_year": 2022
+            },
+            "has_moved": 1,
+            "man_down_alarm": 0,
+            "operation_mode": 3,
+            "payload_type": "location_fixed",
+            "positioning_success_type": 1,
+            "positioning_type": 0,
+            "raw_bytes": [
+                35,
+                18,
+                240,
+                1,
+                7,
+                230,
+                6,
+                8,
+                9,
+                23,
+                54,
+                2,
+                21,
+                85,
+                201,
+                202,
+                54,
+                151,
+                112,
+                194,
+                57,
+                1,
+                224,
+                170,
+                75,
+                72,
+                194,
+                86,
+                173,
+                201,
+                179,
+                134,
+                156,
+                178
+            ],
+            "raw_original": "2312f00107e60608091736021555c9ca369770c23901e0aa4b48c256adc9b3869cb2",
+            "sensor": "MOKO LW001-BG PRO",
+            "tamper_alarm": 0,
+            "temperature": 18
+        },
+        "status": "success"
+    },
+    "dev_eui": "FAF279BE752C0000",
+    "devaddr": "9F010048",
+    "fcnt": 37,
+    "id": "44081cc3-5ab8-488b-b6b5-72c24042d4c1",
+    "metadata": {
+        "adr_allowed": false,
+        "cf_list_enabled": false,
+        "multi_buy": 1,
+        "organization_id": "c3a4dd3a-f875-4277-a89e-9fe518283e62",
+        "preferred_hotspots": [],
+        "rx_delay": 1,
+        "rx_delay_actual": 1,
+        "rx_delay_state": "rx_delay_established"
+    },
+    "name": "GPStracker",
+    "payload": "IxLwAQfmBggJFzYCFVXJyjaXcMI5AeCqS0jCVq3Js4acsg==",
+    "payload_size": 34,
+    "port": 2,
+    "raw_packet": "gJ8BAEgAJQACbHznj7m0mac5ot0vnpy33HS8DG07c/jTkAkDSJmItT0BSykXdTA=",
+    "replay": false,
+    "reported_at": 1654673041244,
+    "type": "uplink",
+    "uuid": "cfb0d3ea-3d9d-4e0a-8df1-3b1adda5da42",
+    "_mappeddata": {
+        "VLTG": 3.7,
+        "MVMNT": 1,
+        "DMG": 0,
+        "TEMP": 18,
+        "PLSIZE": 34,
+        "PLTYPE": "location_fixed"
+    },
+    "_unmodeleddata": {
+        "_mappeddata": {
+            "date_time": "2022-6-8 9:23:54 UTC+2"
+        }
+    },
+    "_eventtype": "Telemetry",
+    "_timestamp": "2022-06-08T07:24:02.197Z"
+}
