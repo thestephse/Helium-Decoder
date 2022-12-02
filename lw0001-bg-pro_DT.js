@@ -1,7 +1,5 @@
 function Decoder(bytes, port) {
   var decoded = [];
-  // warnings = [];
-  // errors = [];
 
   common_header = bytes.slice(0, 3);
 
@@ -65,7 +63,7 @@ function Decoder(bytes, port) {
 
   if (port === 2) {
     payload_type = "location_fix";
-    positioning_type = (statusB >> 6) & 0x01; //not sure if statusB , original code is decoded.status , but status was not defined before
+    positioning_type = (statusB >> 6) & 0x01;
     positioning_success_type = bytes[3];
     date_time = Bytes2DateTime(bytes.slice(4, 12));
     data_length = bytes[12];
@@ -85,9 +83,6 @@ function Decoder(bytes, port) {
       decoded.push({
         field: "GPS_LOCATION",
         value: "(" + gps.longitude + "," + gps.latitude + ")",
-
-        field: "FIX",
-        value: "GPS",
       });
     } else if (positioning_success_type === 0) {
       //wifi
@@ -97,7 +92,7 @@ function Decoder(bytes, port) {
           payload[i * 7 + 6] - 256;
 
         decoded.push({
-          field: "GPS_LOCATION",
+          field: "WIFI_LOCATION",
           value: wifi,
 
           // decoded.push({
@@ -115,7 +110,7 @@ function Decoder(bytes, port) {
           payload[i * 7 + 6] - 256;
 
         decoded.push({
-          field: "GPS_LOCATION",
+          field: "BT_LOCATION",
           value: bluetooth,
 
           field: "FIX",
@@ -192,11 +187,6 @@ function Decoder(bytes, port) {
   raw_bytes = Bytes2Hex(bytes);
 
   return decoded;
-  // return {
-  //   data: decoded,
-  //   warnings: [],
-  //   errors: [],
-  // };
 }
 
 /* 4-byte float in IEEE 754 standard, byte order is low byte first */

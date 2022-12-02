@@ -1,0 +1,103 @@
+{
+    "payload": "ARTgAgfmBgcODAsCCR9L9sIIDlFiGg==",
+    "port": 2,
+    "_mappeddata": {
+        "VLTG": 3.6,
+        "TEMP": 20
+    },
+    "_unmodeleddata": {
+        "app_eui": "FAF279FFFFBE752C",
+        "dc": {
+            "balance": 7737,
+            "nonce": 2
+        },
+        "decoded": {
+            "payload": {
+                "Latitude": 52.5072066,
+                "Longitude": 13.5156066,
+                "ack_frm_cnt": 0,
+                "battery_low": 0,
+                "battery_voltage": 3.6,
+                "data_length": 9,
+                "date_time": {
+                    "datetime": "2022-6-7 14:12:11 UTC+2",
+                    "ts_day": 7,
+                    "ts_hour": 14,
+                    "ts_min": 12,
+                    "ts_month": 6,
+                    "ts_sec": 11,
+                    "ts_tz": "+2",
+                    "ts_year": 2022
+                },
+                "gps": {
+                    "latitude": 52.5072066,
+                    "longitude": 13.5156066,
+                    "pdop": 3
+                },
+                "has_moved": 0,
+                "man_down_alarm": 0,
+                "operation_mode": 1,
+                "payload_type": "location_fixed",
+                "positioning_success_type": 2,
+                "positioning_type": 0,
+                "raw_bytes": [
+                    1,
+                    20,
+                    224,
+                    2,
+                    7,
+                    230,
+                    6,
+                    7,
+                    14,
+                    12,
+                    11,
+                    2,
+                    9,
+                    31,
+                    75,
+                    246,
+                    194,
+                    8,
+                    14,
+                    81,
+                    98,
+                    26
+                ],
+                "raw_original": "0114e00207e606070e0c0b02091f4bf6c2080e51621a",
+                "sensor": "MOKO LW001-BG PRO",
+                "tamper_alarm": 0,
+                "temperature": 20
+            },
+            "status": "success"
+        },
+        "dev_eui": "FAF279BE752C0000",
+        "devaddr": "9A010048",
+        "fcnt": 112,
+        "id": "44081cc3-5ab8-488b-b6b5-72c24042d4c1",
+        "metadata": {
+            "adr_allowed": false,
+            "cf_list_enabled": false,
+            "multi_buy": 1,
+            "organization_id": "c3a4dd3a-f875-4277-a89e-9fe518283e62",
+            "preferred_hotspots": [],
+            "rx_delay": 1,
+            "rx_delay_actual": 1,
+            "rx_delay_state": "rx_delay_established"
+        },
+        "name": "GPStracker",
+        "payload_size": 22,
+        "raw_packet": "gJoBAEgAcAAC44OCWWgtmDq/H9fy8cax9VTB4A1HZZsEJ4E=",
+        "replay": false,
+        "reported_at": 1654604103589,
+        "type": "uplink",
+        "uuid": "53283edf-c2fc-4c65-bd37-ed3d6c9a6577",
+        "_mappeddata": {
+            "TIME": "2022-6-7 14:12:11 UTC+2",
+            "MVMNT": 0,
+            "DMG": 0
+        }
+    },
+    "_eventtype": "Telemetry",
+    "_timestamp": "2022-06-07T12:15:04.196Z"
+}
