@@ -1,0 +1,62 @@
+{
+  "app_eui": "A840410000000100",
+  "dc": { "balance": 17479, "nonce": 4 },
+  "decoded": {
+    "payload": {
+      "BatV": 2.885,
+      "Ext_sensor": "Interrupt Sensor send",
+      "Exti_pin_level": "Low",
+      "Exti_status": "False",
+      "Hum_SHT": "43.8",
+      "No_connect": "Sensor no connection",
+      "TempC_SHT": "21.91"
+    },
+    "status": "success"
+  },
+  "dev_eui": "A8404178118446DA",
+  "devaddr": "AE000048",
+  "fcnt": 32874,
+  "hotspots": [
+    {
+      "channel": 5,
+      "frequency": 868.1,
+      "hold_time": 0,
+      "id": "112T5fJGVzcS2KsGTCpZm5WuASoV8Tos3j9ceQt8nS4G68FT1Rjy",
+      "lat": 49.18157957882509,
+      "long": 8.54062554315318,
+      "name": "rhythmic-emerald-beetle",
+      "reported_at": 1683170119986,
+      "rssi": -80.0,
+      "snr": 10.0,
+      "spreading": "SF12BW125",
+      "status": "success"
+    }
+  ],
+  "id": "2a91f7df-c091-4719-9969-b011050ca65c",
+  "metadata": {
+    "adr_allowed": true,
+    "cf_list_enabled": false,
+    "labels": [
+      {
+        "id": "a01e613e-a17d-40db-b761-0a2c535a9fe6",
+        "name": "CAKE",
+        "organization_id": "57d0bf5d-4bb1-40cc-8786-6dc2998cf3b0"
+      }
+    ],
+    "multi_buy": 1,
+    "organization_id": "57d0bf5d-4bb1-40cc-8786-6dc2998cf3b0",
+    "preferred_hotspots": [],
+    "rx_delay": 2,
+    "rx_delay_actual": 2,
+    "rx_delay_state": "rx_delay_established"
+  },
+  "name": "LHT65 1",
+  "payload": "y0UIjwG2hAAAf/8=",
+  "payload_size": 11,
+  "port": 2,
+  "raw_packet": "QK4AAEiCaoADBgJCxnaHm0ND5e/sbTA322Q=",
+  "replay": false,
+  "reported_at": 1683170119986,
+  "type": "uplink",
+  "uuid": "8b1ccabf-2b26-43a2-b1f5-312b93e2a642"
+}
