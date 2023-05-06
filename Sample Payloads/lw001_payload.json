@@ -1,0 +1,70 @@
+{
+  "app_eui": "A840410000000100",
+  "dc": { "balance": 16721, "nonce": 4 },
+  "decoded": {
+    "payload": {
+      "ack_frm_cnt": 11,
+      "active_state_counts": 0,
+      "battery_low": 0,
+      "battery_voltage": 3.6,
+      "fw_ver": "1.0.7",
+      "has_moved": 0,
+      "man_down_alarm": 0,
+      "operation_mode": 3,
+      "payload_type": "heartbeat",
+      "raw_bytes": [3, 11, 235, 3, 71, 0, 0, 0, 0],
+      "raw_original": "030beb034700000000",
+      "reboot_reason": 3,
+      "sensor": "MOKO LW001-BG PRO",
+      "tamper_alarm": 0,
+      "temperature": 11
+    },
+    "status": "success"
+  },
+  "dev_eui": "D9836FFFFFE4A7D3",
+  "devaddr": "B9010048",
+  "fcnt": 1202,
+  "hotspots": [
+    {
+      "channel": 7,
+      "frequency": 868.5,
+      "hold_time": 0,
+      "id": "11UDFsvq3enJ9Wer8ar4tkxR2FwrmVKQMeGseFBGk7yojhbxpuq",
+      "lat": 52.055010732669274,
+      "long": 13.714806832256606,
+      "name": "virtual-sand-flamingo",
+      "reported_at": 1683274005098,
+      "rssi": -119.0,
+      "snr": -9.0,
+      "spreading": "SF12BW125",
+      "status": "success"
+    }
+  ],
+  "id": "3b068f56-66a5-4ed3-8349-e17222ec0248",
+  "metadata": {
+    "adr_allowed": false,
+    "cf_list_enabled": false,
+    "labels": [
+      {
+        "id": "a01e613e-a17d-40db-b761-0a2c535a9fe6",
+        "name": "CAKE",
+        "organization_id": "57d0bf5d-4bb1-40cc-8786-6dc2998cf3b0"
+      }
+    ],
+    "multi_buy": 1,
+    "organization_id": "57d0bf5d-4bb1-40cc-8786-6dc2998cf3b0",
+    "preferred_hotspots": [],
+    "rx_delay": 1,
+    "rx_delay_actual": 1,
+    "rx_delay_state": "rx_delay_established"
+  },
+  "name": "LW001 Pro 1",
+  "payload": "AwvrA0cAAAAA",
+  "payload_size": 9,
+  "port": 1,
+  "raw_packet": "gLkBAEgAsgQBJSAtClNzGsSEre+PrA==",
+  "replay": false,
+  "reported_at": 1683274005098,
+  "type": "uplink",
+  "uuid": "78ae718d-9e0a-419e-a692-794bcf420783"
+}

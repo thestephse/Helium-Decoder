@@ -1,0 +1,62 @@
+{
+  "app_eui": "A840410000000100",
+  "dc": { "balance": 16722, "nonce": 4 },
+  "decoded": {
+    "payload": {
+      "batterycharging": 0,
+      "batterylevle": "89%",
+      "dev_status": "none",
+      "pack_type": "heart",
+      "timestamp": 1288258,
+      "timezone": 2,
+      "work_mode": "motion_idle"
+    },
+    "status": "success"
+  },
+  "dev_eui": "E32793FFFF966B27",
+  "devaddr": "11000048",
+  "fcnt": 2,
+  "hotspots": [
+    {
+      "channel": 7,
+      "frequency": 868.5,
+      "hold_time": 0,
+      "id": "11jQis5haPAc7dxtUeewEodPJh7UE61Dmjip8oZkRax2UxyjAEp",
+      "lat": 49.180135857181085,
+      "long": 8.536842907046621,
+      "name": "big-lime-alpaca",
+      "reported_at": 1683273911569,
+      "rssi": -66.0,
+      "snr": 7.0,
+      "spreading": "SF12BW125",
+      "status": "success"
+    }
+  ],
+  "id": "898eb1bb-6c30-4910-8dd8-2e8fd93a8867",
+  "metadata": {
+    "adr_allowed": false,
+    "cf_list_enabled": false,
+    "labels": [
+      {
+        "id": "a01e613e-a17d-40db-b761-0a2c535a9fe6",
+        "name": "CAKE",
+        "organization_id": "57d0bf5d-4bb1-40cc-8786-6dc2998cf3b0"
+      }
+    ],
+    "multi_buy": 1,
+    "organization_id": "57d0bf5d-4bb1-40cc-8786-6dc2998cf3b0",
+    "preferred_hotspots": [],
+    "rx_delay": 1,
+    "rx_delay_actual": 1,
+    "rx_delay_state": "rx_delay_established"
+  },
+  "name": "LW004 PB 1",
+  "payload": "WUACABOoQg==",
+  "payload_size": 7,
+  "port": 4,
+  "raw_packet": "gBEAAEiAAgAEnMBHcC5cXAU/PQ8=",
+  "replay": false,
+  "reported_at": 1683273911569,
+  "type": "uplink",
+  "uuid": "e844181d-dc3d-4666-9bff-8f8561d2a63b"
+}

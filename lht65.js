@@ -1,14 +1,14 @@
 function Decoder(bytes, port) {
   const batV = (((bytes[0] << 8) | bytes[1]) & 0x3fff) / 1000;
-  const tempC_SHT = Math.round((((bytes[2] << 24) >> 16) | bytes[3]) / 100);
-  const hum_SHT = Math.round(((bytes[4] << 8) | bytes[5]) / 10);
+  const tempC_SHT = ((((bytes[2] << 24) >> 16) | bytes[3]) / 100).toFixed(2);
+  const hum_SHT = (((bytes[4] << 8) | bytes[5]) / 10).toFixed(2);
   const extSensor = bytes[6] & 0x7f;
   const extSensorFlag = (bytes[6] & 0x80) >> 7;
 
   const decoded = {
-    BatV: batV,
-    TempC_SHT: tempC_SHT,
-    Hum_SHT: hum_SHT,
+    batV: batV,
+    temp: tempC_SHT,
+    hum: hum_SHT,
   };
 
   if (extSensor === 1) {

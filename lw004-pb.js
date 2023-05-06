@@ -10,7 +10,7 @@ function Decoder(bytes, port) {
     "event",
     "sys_open",
     "sys_close",
-    "heart",
+    "heartbeat",
     "low_battery",
     "work_gps_fix_success",
     "work_gps_fix_false",
@@ -54,17 +54,19 @@ function Decoder(bytes, port) {
   var dev_info = {};
   var datas = [];
   var parse_len;
-  dev_info.pack_type = packet_type[port - 1];
+  dev_info.payload_type = packet_type[port - 1];
 
   if (port == 1) {
     dev_info.batterycharging = (bytes[0] >> 7) & 0x01; //Parse  Battery charging state
-    dev_info.batterylevle = (bytes[0] & 0x7f) + "%"; //Parse  Battery Level
+    dev_info.batPer = (bytes[0] & 0x7f) + "%"; //Parse  Battery Percentage
+    dev_info.batV = ((bytes[0] & 0x7f) * 3.6) / 100;
     dev_info.timezone = bytes[1]; //timezone
     dev_info.timestamp = BytestoInt(bytes, 2); //timestamp
     dev_info.event_type = event_type[bytes[6]]; //event
   } else if (port == 2) {
     dev_info.batterycharging = (bytes[0] >> 7) & 0x01; //Parse  Battery charging state
-    dev_info.batterylevle = (bytes[0] & 0x7f) + "%"; //Parse  Battery Level
+    dev_info.batV = (bytes[0] & 0x7f) / 100; //Parse  Battery Level , it is in %, so divide by 100 to get the value in V
+
     dev_info.work_mode = dev_mode[(bytes[1] >> 4) & 0x0f]; //work mode
     dev_info.dev_status = dev_status[bytes[1] & 0x0f]; //device status
     dev_info.firmware_ver = "V" + bytes[2] + "." + bytes[3] + "." + bytes[4];
@@ -73,7 +75,8 @@ function Decoder(bytes, port) {
     dev_info.alarm_error = bytes[8]; //error state
   } else if (port == 3) {
     dev_info.batterycharging = (bytes[0] >> 7) & 0x01; //Parse  Battery charging state
-    dev_info.batterylevle = (bytes[0] & 0x7f) + "%"; //Parse  Battery Level
+    dev_info.batPer = (bytes[0] & 0x7f) + "%"; //Parse  Battery Percentage
+    dev_info.batV = ((bytes[0] & 0x7f) * 3.6) / 100;
     dev_info.work_mode = dev_mode[(bytes[1] >> 4) & 0x0f]; //work mode
     dev_info.dev_status = dev_status[bytes[1] & 0x0f]; //device status
     dev_info.timezone = bytes[2]; //timezone
@@ -81,14 +84,17 @@ function Decoder(bytes, port) {
     dev_info.pre_restart_reason = restart_reason[bytes[7]];
   } else if (port == 4) {
     dev_info.batterycharging = (bytes[0] >> 7) & 0x01; //Parse  Battery charging state
-    dev_info.batterylevle = (bytes[0] & 0x7f) + "%"; //Parse  Battery Level
+    dev_info.batPer = (bytes[0] & 0x7f) + "%"; //Parse  Battery Percentage
+    dev_info.batV = ((bytes[0] & 0x7f) * 3.6) / 100;
+
     dev_info.work_mode = dev_mode[(bytes[1] >> 4) & 0x0f]; //work mode
     dev_info.dev_status = dev_status[bytes[1] & 0x0f]; //device status
     dev_info.timezone = bytes[2]; //timezone
     dev_info.timestamp = BytestoInt(bytes, 3); //timestamp
   } else if (port == 5) {
     dev_info.batterycharging = (bytes[0] >> 7) & 0x01; //Parse  Battery charging state
-    dev_info.batterylevle = (bytes[0] & 0x7f) + "%"; //Parse  Battery Level
+    dev_info.batPer = (bytes[0] & 0x7f) + "%"; //Parse  Battery Percentage
+    dev_info.batV = ((bytes[0] & 0x7f) * 3.6) / 100;
     dev_info.work_mode = dev_mode[(bytes[1] >> 4) & 0x0f]; //work mode
     dev_info.dev_status = dev_status[bytes[1] & 0x0f]; //device status
     dev_info.timezone = bytes[2]; //timezone
@@ -96,7 +102,8 @@ function Decoder(bytes, port) {
     dev_info.low_power_level = bytes[7]; //low power level
   } else if (port == 6 || port == 10) {
     dev_info.batterycharging = (bytes[0] >> 7) & 0x01; //Parse  Battery charging state
-    dev_info.batterylevle = (bytes[0] & 0x7f) + "%"; //Parse  Battery Level
+    dev_info.batPer = (bytes[0] & 0x7f) + "%"; //Parse  Battery Percentage
+    dev_info.batV = ((bytes[0] & 0x7f) * 3.6) / 100;
     dev_info.work_mode = dev_mode[(bytes[1] >> 5) & 0x07]; //work mode
     dev_info.dev_status = dev_status[(bytes[1] >> 2) & 0x07]; //device status
 
@@ -127,7 +134,8 @@ function Decoder(bytes, port) {
     ];
 
     dev_info.batterycharging = (bytes[0] >> 7) & 0x01; //Parse  Battery charging state
-    dev_info.batterylevle = (bytes[0] & 0x7f) + "%"; //Parse  Battery Level
+    dev_info.batPer = (bytes[0] & 0x7f) + "%"; //Parse  Battery Percentage
+    dev_info.batV = ((bytes[0] & 0x7f) * 3.6) / 100;
     dev_info.work_mode = dev_mode[(bytes[1] >> 4) & 0x0f];
     dev_info.dev_status = dev_status[bytes[1] & 0x0f];
     dev_info.fix_false_reason = gps_fix_false_reason[bytes[2]];

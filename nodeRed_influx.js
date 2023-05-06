@@ -1,16 +1,11 @@
 const keysOfInterest = [
-  "battery_voltage",
-  "temperature",
-  "operation_mode",
-  "humidity",
+  "batV",
+  "temp",
+  "hum",
   "lat",
-  "long",
+  "lon",
   "hotspots",
-  "TempC_DS",
-  "Hum_SHT",
-  "heart",
-  "event",
-  "low_battery",
+  "payload_type",
   "reported_at",
 ];
 
@@ -33,7 +28,7 @@ for (let i = 0; i < hotspots.length; i++) {
 delete fields.hotspots; // Remove the hotspots array from the fields
 
 let influxMessage = {
-  measurement: msg.payload.uuid,
+  measurement: msg.payload.id,
   fields: fields,
   tags: { name: msg.payload.name },
   timestamp: new Date(msg.payload.reported_at).getTime() * 1000000, // Nanoseconds

@@ -18,13 +18,12 @@ function Decoder(bytes, port) {
   decoded.man_down_alarm = (statusB >> 4) & 0x01;
   decoded.has_moved = (statusB >> 5) & 0x01;
 
-  decoded.temperature = common_header[1];
-  decoded.temperature -= decoded.temperature > 128 ? 256 : 0;
+  decoded.temp = common_header[1];
+  decoded.temp -= decoded.temp > 128 ? 256 : 0;
 
   decoded.ack_frm_cnt = common_header[2] & 0x0f;
-  decoded.battery_voltage = (common_header[2] >> 4) & 0x0f;
-  decoded.battery_voltage =
-    Math.round(10 * (2.2 + 0.1 * decoded.battery_voltage)) / 10;
+  decoded.batV = (common_header[2] >> 4) & 0x0f;
+  decoded.batV = Math.round(10 * (2.2 + 0.1 * decoded.batV)) / 10;
 
   if (port === 1) {
     decoded.payload_type = "heartbeat";
