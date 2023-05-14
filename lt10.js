@@ -134,7 +134,7 @@ function Decoder(bytes, port) {
   const batteryPercent =
     bitsToUnsigned(hexToBits(toPaddedHexString(bytes[9] << 8))) / 256;
 
-  const batV = 3.0 + batteryPercent * (3.6 - 3.0);
+  const batV = 3.0 + (batteryPercent / 100) * (3.6 - 3.0);
 
   // Decoded data
   const decoded = {
