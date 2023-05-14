@@ -134,13 +134,15 @@ function Decoder(bytes, port) {
   const batteryPercent =
     bitsToUnsigned(hexToBits(toPaddedHexString(bytes[9] << 8))) / 256;
 
+  const batV = 3.0 + batteryPercent * (3.6 - 3.0);
+
   // Decoded data
   const decoded = {
-    Longitude: longitude,
-    Latitude: latitude,
+    lon: longitude,
+    lat: latitude,
     Gps: gps,
-    ReportType: reportType,
-    BatteryPercent: batteryPercent,
+    payload_type: reportType,
+    batV: batV,
   };
 
   // Preserved field is not used here, similar to the provided Decoder function.
