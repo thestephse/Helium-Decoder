@@ -9,6 +9,8 @@ const keysOfInterest = [
   'reported_at',
   'alarm',
   'door_open_status',
+  'organization_id',
+  'multibuy',
 ];
 
 let fields = {};
