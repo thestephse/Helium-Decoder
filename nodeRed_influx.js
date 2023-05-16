@@ -1,12 +1,14 @@
 const keysOfInterest = [
-  "batV",
-  "temp",
-  "hum",
-  "lat",
-  "lon",
-  "hotspots",
-  "payload_type",
-  "reported_at",
+  'batV',
+  'temp',
+  'hum',
+  'lat',
+  'lon',
+  'hotspots',
+  'payload_type',
+  'reported_at',
+  'alarm',
+  'door_open_status',
 ];
 
 let fields = {};
