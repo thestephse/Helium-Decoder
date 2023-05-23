@@ -11,6 +11,7 @@ const keysOfInterest = [
   'door_open_status',
   'organization_id',
   'multibuy',
+  'distance',
 ];
 
 let fields = {};

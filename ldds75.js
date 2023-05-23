@@ -1,58 +1,23 @@
+// Decoder for LDDS75 Dragino Distance sensor
+
 function Decoder(bytes, port) {
-  //Payload Formats of LHT65 Deveice
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var len = bytes.length;
+  var value = ((bytes[0] << 8) | bytes[1]) & 0x3fff;
+  var batV = value / 1000; //Battery,units:V
+
+  var distance = 0;
+  if (len == 5) {
+    value = (bytes[2] << 8) | bytes[3];
+    distance = value; //distance,units:mm
+    if (value < 20) distance = 'Invalid Reading';
+  } else distance = 'No Sensor';
+
+  var interrupt = bytes[len - 1];
   return {
-    //External sensor
-    Ext_sensor: {
-      0: "No external sensor",
-      1: "Temperature Sensor",
-      4: "Interrupt Sensor send",
-      5: "Illumination Sensor",
-      6: "ADC Sensor",
-      7: "Interrupt Sensor count",
-    }[bytes[6] & 0x7f],
-
-    //Battery,units:V
-    BatV: (((bytes[0] << 8) | bytes[1]) & 0x3fff) / 1000,
-
-    //SHT20,temperature,units:â„ƒ
-    TempC_SHT: ((((bytes[2] << 24) >> 16) | bytes[3]) / 100).toFixed(2),
-
-    //SHT20,Humidity,units:%
-    Hum_SHT: (((bytes[4] << 8) | bytes[5]) / 10).toFixed(1),
-
-    //DS18B20,temperature,units:â„ƒ
-    TempC_DS: {
-      1: ((((bytes[7] << 24) >> 16) | bytes[8]) / 100).toFixed(2),
-    }[bytes[6] & 0xff],
-
-    //Exti pin level,PA4
-    Exti_pin_level: {
-      4: bytes[7] ? "High" : "Low",
-    }[bytes[6] & 0x7f],
-
-    //Exit pin status,PA4
-    Exti_status: {
-      4: bytes[8] ? "True" : "False",
-    }[bytes[6] & 0x7f],
-
-    //BH1750,illumination,units:lux
-    ILL_lux: {
-      5: (bytes[7] << 8) | bytes[8],
-    }[bytes[6] & 0x7f],
-
-    //ADC,PA4,units:V
-    ADC_V: {
-      6: ((bytes[7] << 8) | bytes[8]) / 1000,
-    }[bytes[6] & 0x7f],
-
-    //Exti count,PA4,units:times
-    Exit_count: {
-      7: (bytes[7] << 8) | bytes[8],
-    }[bytes[6] & 0x7f],
-
-    //Applicable to working mode 4567,and working mode 467 requires short circuit PA9 and PA10
-    No_connect: {
-      1: "Sensor no connection",
-    }[(bytes[6] & 0x80) >> 7],
+    Bat: batV,
+    Distance: distance,
+    Interrupt_status: interrupt,
   };
 }
